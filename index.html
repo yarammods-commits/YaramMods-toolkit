@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YARAM-MODS | Web Toolkit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-blue: #0ff0fc;
+            --neon-purpule: #8a2be2;
+            --neon-pink: #ff10f0;
+            --neon-green: #39ff14;
+            --dark-bg: #0a0a10;
+            --card-bg: rgba(16, 16, 32, 0.8);
+            --text-color: #f0f0f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, #0a0a10, #151525, #0f1720, #151530);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
+        }
+
+        /* Scanline effect overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(255, 255, 255, 0.03) 50%, 
+                rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.2;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Sticky Announcement Bar */
+        .sticky-announcement {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            padding: 12px 20px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .sticky-announcement i {
+            font-size: 1.2rem;
+        }
+
+        /* Disclaimer Banner */
+        .disclaimer-banner {
+            background: rgba(255, 100, 100, 0.2);
+            border: 1px solid rgba(255, 100, 100, 0.5);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #ffaaaa;
+        }
+
+        /* Password Gate Styles */
+        #password-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(5, 5, 15, 0.97);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .gate-content {
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 15px;
+            background: var(--card-bg);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+            text-align: center;
+            animation: fadeIn 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+        }
+
+        .logo::after {
+            content: "™";
+            font-size: 1rem;
+            vertical-align: super;
+            margin-left: 2px;
+        }
+
+        .gate-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        /* Requirements Section */
+        .requirements-section {
+            background: rgba(10, 10, 20, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(100, 100, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .requirements-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(20, 20, 40, 0.6);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .requirement-item.completed {
+            background: rgba(20, 40, 20, 0.6);
+            border-left: 4px solid var(--neon-green);
+        }
+
+        .requirement-icon {
+            font-size: 1.8rem;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .requirement-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .requirement-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .requirement-description {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .requirement-btn {
+            padding: 8px 15px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .requirement-btn.completed {
+            background: var(--neon-green);
+            color: #000;
+        }
+
+        .requirement-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--neon-blue);
+        }
+
+        .requirement-btn.completed:hover {
+            box-shadow: 0 5px 15px var(--neon-green);
+        }
+
+        .requirement-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .requirements-complete {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(20, 40, 20, 0.6);
+            border-radius: 10px;
+            border-left: 4px solid var(--neon-green);
+            display: none;
+        }
+
+        .requirements-complete.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .complete-icon {
+            font-size: 2rem;
+            color: var(--neon-green);
+            margin-bottom: 10px;
+        }
+
+        .complete-text {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-green);
+            margin-bottom: 15px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(100, 100, 255, 0.2);
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* Password Modal Styles */
+        #password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+
+        #password-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 15, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.4);
+            text-align: center;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            border: 1px solid rgba(100, 100, 255, 0.3);
+        }
+
+        #password-modal.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--neon-pink);
+        }
+
+        .modal-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+            font-size: 1.5rem;
+        }
+
+        .modal-description {
+            margin-bottom: 25px;
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group {
+            position: relative;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            font-size: 0.9rem;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid var(--neon-purple);
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .password-input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .submit-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .error-message {
+            color: #ff3860;
+            font-weight: 600;
+            margin-top: 10px;
+            opacity: 0;
+            height: 0;
+            transition: all 0.3s;
+            text-shadow: 0 0 5px rgba(255, 56, 96, 0.5);
+        }
+
+        .error-message.show {
+            opacity: 1;
+            height: auto;
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+
+        .join-prompt {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .join-link {
+            color: var(--neon-green);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+        }
+
+        .join-link:hover {
+            color: white;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* Main Content Styles */
+        #main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Tool Drop Banner */
+        .tool-drop-banner {
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple));
+            padding: 12px 0;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(255, 16, 240, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .new-tool-btn {
+            padding: 8px 15px;
+            background: var(--neon-green);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .new-tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin: 40px 0 20px;
+            text-align: center;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+            border-radius: 3px;
+        }
+
+        /* Bio Section */
+        .bio-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid rgba(100, 100, 255, 0.1);
+        }
+
+        .bio-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #ccc;
+        }
+
+        .highlight {
+            color: var(--neon-blue);
+            font-weight: 600;
+        }
+
+        /* Category Filter */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: transparent;
+            border: 2px solid var(--neon-purple);
+            border-radius: 50px;
+            color: var(--neon-purple);
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--neon-purple);
+            color: white;
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        /* Category Sections */
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+            border-bottom: 2px solid var(--neon-purple);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(100, 100, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--neon-pink), var(--neon-green));
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s;
+        }
+
+        .tool-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .tool-card:nth-child(2n) {
+            animation-delay: 1s;
+        }
+
+        .tool-card:nth-child(3n) {
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 247, 255, 0.2);
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--neon-blue);
+            text-align: center;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .tool-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--neon-blue);
+        }
+
+        .tool-description {
+            margin-bottom: 20px;
+            line-height: 1.5;
+            color: #ccc;
+        }
+
+        .launch-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            background: transparent;
+            border: 2px solid var(--neon-purple);
+            border-radius: 50px;
+            color: var(--neon-purple);
+            font-family: 'Orbitron', sans-serif;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .launch-btn:hover {
+            background: var(--neon-purple);
+            color: white;
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        /* Community Links */
+        .community-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .community-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .community-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--neon-pink), var(--neon-green));
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s;
+        }
+
+        .community-btn:hover::before {
+            opacity: 0.1;
+        }
+
+        .community-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .community-btn.whatsapp {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .community-btn.whatsapp:hover {
+            background: rgba(57, 255, 20, 0.1);
+        }
+
+        .community-btn.telegram {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+        }
+
+        .community-btn.telegram:hover {
+            background: rgba(0, 247, 255, 0.1);
+        }
+
+        .community-btn i {
+            font-size: 1.5rem;
+        }
+
+        /* WhatsApp Request Section */
+        .whatsapp-request {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 40px 0;
+            border: 1px solid rgba(100, 100, 255, 0.1);
+            text-align: center;
+        }
+
+        .whatsapp-request h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-green);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        .request-input-group {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        #toolRequest {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid var(--neon-green);
+            border-radius: 5px 0 0 5px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #toolRequest:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        #sendRequestBtn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            background: linear-gradient(45deg, var(--neon-green), #25D366);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #sendRequestBtn:hover {
+            background: linear-gradient(45deg, #25D366, var(--neon-green));
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .join-community {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 16, 240, 0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .join-community:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 16, 240, 0.5);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin: 50px 0;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid rgba(100, 100, 255, 0.1);
+        }
+
+        .faq-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            text-align: center;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-question {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            padding: 15px 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 0 0 15px 0;
+            color: #ccc;
+            display: none;
+        }
+
+        .faq-answer.show {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .footer-description {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            color: #aaa;
+        }
+
+        .home-link {
+            color: var(--neon-blue);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .home-link:hover {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+        }
+
+        /* 404 Page */
+        #page-404 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(5, 5, 15, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+        }
+
+        .error-content {
+            text-align: center;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .error-code {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            color: #ff3860;
+            text-shadow: 0 0 20px #ff3860;
+            margin-bottom: 20px;
+        }
+
+        .error-message-404 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--neon-blue);
+        }
+
+        .home-btn {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--neon-blue);
+        }
+
+        /* Announcement Popup */
+        .announcement-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+            z-index: 1001;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            display: none;
+            border: 2px solid var(--neon-blue);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .popup-close:hover {
+            color: var(--neon-pink);
+        }
+
+        .popup-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .popup-content {
+            margin-bottom: 20px;
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        .popup-btn {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .popup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--neon-blue);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .gate-content {
+                padding: 20px;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .community-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+            
+            .request-input-group {
+                flex-direction: column;
+            }
+            
+            #toolRequest {
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+            
+            #sendRequestBtn {
+                border-radius: 5px;
+                width: 100%;
+            }
+            
+            .join-community {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .requirement-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .requirement-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .requirement-btn {
+                margin-top: 10px;
+                width: 100%;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .modal-logo {
+                font-size: 1.7rem;
+            }
+            
+            .sticky-announcement {
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
+            
+            .tool-drop-banner {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.7rem;
+            }
+            
+            .gate-content {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .password-input, .submit-btn {
+                padding: 10px 15px;
+            }
+            
+            .category-filter {
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .error-code {
+                font-size: 3.5rem;
+            }
+            
+            .error-message-404 {
+                font-size: 1.2rem;
+            }
+            
+            .modal-content {
+                padding: 15px;
+            }
+            
+            .sticky-announcement {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Gate -->
+    <div id="password-gate">
+        <div class="gate-content">
+            <div class="logo">YARAM-MODS<<</div>
+            <h2>Web Toolkit Access</h2>
+            
+            <!-- Requirements Section -->
+            <div class="requirements-section">
+                <h3 class="requirements-title">Access Requirements</h3>
+                <p style="text-align: center; margin-bottom: 20px; color: #aaa;">Complete these steps to unlock the password field</p>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                
+                <div class="requirement-item" id="requirement-group">
+                    <div class="requirement-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="requirement-text">
+                        <div class="requirement-title">Join WhatsApp Group</div>
+                        <div class="requirement-description">Connect with our community for updates and support</div>
+                    </div>
+                    <button class="requirement-btn" id="join-group-btn">Join Group</button>
+                </div>
+                
+                <div class="requirement-item" id="requirement-channel">
+                    <div class="requirement-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="requirement-text">
+                        <div class="requirement-title">Join & Unmute Channel</div>
+                        <div class="requirement-description">Get instant notifications for new tools and updates</div>
+                    </div>
+                    <button class="requirement-btn" id="join-channel-btn">Join Channel</button>
+                </div>
+                
+                <div class="requirements-complete" id="requirements-complete">
+                    <div class="complete-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="complete-text">Requirements Complete!</div>
+                    <p>You can now access the password field below</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="password-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-logo">YARAM-KAZMI</div>
+            <h3 class="modal-title">Enter Password</h3>
+            <p class="modal-description">Enter the password to unlock exclusive tools</p>
+            
+            <form class="password-form" id="password-form">
+                <div class="input-group">
+                    <label class="input-label" for="password-input">Password</label>
+                    <input type="password" class="password-input" id="password-input" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="submit-btn">Unlock Tools</button>
+                <div class="error-message" id="error-message">Incorrect password. Your Device has been HACKED BY YARAM-MODS 👿</div>
+            </form>
+            
+            <div class="join-prompt">
+                ❗ Don't have the password? <a href="https://whatsapp.com/channel/0029VaffEJH2f3EFCwrsKq3j" class="join-link" target="_blank">Join the Channel</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Announcement Popup -->
+    <div class="announcement-popup" id="announcement-popup">
+        <button class="popup-close" id="popup-close">&times;</button>
+        <h3 class="popup-title"><i class="fas fa-bolt"></i> New Tool Available!</h3>
+        <div class="popup-content">
+            We've just released a powerful new tool: <strong>POWERFUL MOBILE RAT</strong>. Check it out now!
+        </div>
+        <button class="popup-btn" id="popup-btn">
+            <i class="fas fa-eye"></i> View Tool
+        </button>
+    </div>
+
+    <!-- 404 Page -->
+    <div id="page-404">
+        <div class="error-content">
+            <div class="error-code">404</div>
+            <div class="error-message-404">Page Not Found</div>
+            <p>The page you're looking for doesn't exist or has been moved.</p>
+            <button class="home-btn" id="home-btn">Return to Home</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content (hidden until unlocked) -->
+    <div id="main-content">
+        <!-- Sticky Announcement Bar -->
+        <div class="sticky-announcement">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>🚀 New tools updated weekly — stay connected for exclusive drops!</span>
+        </div>
+
+        <!-- Disclaimer Banner -->
+        <div class="disclaimer-banner">
+            <i class="fas fa-info-circle"></i>
+            <strong>Disclaimer:</strong> All tools are not 100% working or may be outdated. If you have any issues, feel free to contact us.
+        </div>
+
+        <!-- Tool Drop Banner -->
+        <div class="tool-drop-banner">
+            <span>🎁 New tool dropping every Friday. Stay tuned!</span>
+            <button class="new-tool-btn" id="new-tool-btn">View New Tool</button>
+        </div>
+
+        <div class="container">
+            <!-- Bio Section -->
+            <div class="bio-section">
+                <p class="bio-text">
+                    <span class="highlight">YARAM-MODS</span> - Helping the underground tech community grow with real tools, tips, and secrets since 2024.
+                </p>
+            </div>
+
+            <!-- Tools Section -->
+            <h2 class="section-title">Developer Tools</h2>
+            
+            <!-- Category Filter -->
+            <div class="category-filter">
+                <button class="filter-btn active" data-filter="all">All Tools</button>
+                <button class="filter-btn" data-filter="hacking">Hacking Tools</button>
+                <button class="filter-btn" data-filter="method">Methods</button>
+                <button class="filter-btn" data-filter="premium">Premium Apps</button>
+                <button class="filter-btn" data-filter="utility">Utilities</button>
+            </div>
+            
+            <!-- Hacking Tools Category -->
+            <div class="category-section" id="hacking-tools">
+                <h3 class="category-title">Hacking Tools</h3>
+                <div class="tools-grid">
+                    <!-- Tool Card 1 -->
+                    <div class="tool-card" data-tool-id="1">
+                        <div class="tool-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 class="tool-name">Camera Hack Bot</h3>
+                        <p class="tool-description">Hack Victim Camera And Capture Photo ,Microphone, Phone Information, Live Location Etc BY YARAM-MODS.</p>
+                        <a href="https://t.me/YARAMXKAZMI" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 3 -->
+                    <div class="tool-card" data-tool-id="3">
+                        <div class="tool-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="tool-name">𝗣𝗛𝗢𝗡𝗘 𝗟𝗢𝗖𝗞 𝗔𝗣𝗣</h3>
+                        <p class="tool-description">Download Don't Install, Send To Victims BY YARAM-MODS.</p>
+                        <a href="https://t.me/yaramxkazmi" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 8 -->
+                    <div class="tool-card" data-tool-id="8">
+                        <div class="tool-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3 class="tool-name">𝙒𝙃𝘼𝙏𝙎𝘼𝙋𝙋 𝙃𝘼𝘾𝙆 2025</h3>
+                        <p class="tool-description">WhatsApp Hack Method BY YARAM-MODS.</p>
+                        <a href="https://www.mediafire.com/file/vagee7vbtcdauhh/WHATSAPP-HACK-2025-BY-TEAM-WORLD-KING.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 10 -->
+                    <div class="tool-card" data-tool-id="10">
+                        <div class="tool-icon">
+                            <i class="fas fa-mobile"></i>
+                        </div>
+                        <h3 class="tool-name">𝙁𝙐𝙇𝙇 𝙈𝙊𝘽𝙄𝙇𝙀 𝙃𝘼𝘾𝙆 𝙈𝙀𝙏𝙃𝙊𝘿 </h3>
+                        <p class="tool-description">𝙁𝙐𝙇𝙇 𝙈𝙊𝘽𝙄𝙇𝙀 𝙃𝘼𝘾𝙆 𝙈𝙀𝙏𝙃𝙊𝘿 BY YARAM-MODS </p>
+                        <a href="https://www.mediafire.com/file/b91jv4ch9eu0dx6/FULLMOBILEHACKBYWORLDKING.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 11 -->
+                    <div class="tool-card" data-tool-id="11">
+                        <div class="tool-icon">
+                            <i class="fab fa-facebook"></i>
+                        </div>
+                        <h3 class="tool-name">𝙁𝘼𝘾𝙀𝘽𝙊𝙊𝙆 𝙃𝘼𝘾𝙆 𝙊𝙒𝙉 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙈𝘼𝙆𝙄𝙉𝙂</h3>
+                        <p class="tool-description">𝙁𝘼𝘾𝙀𝘽𝙊𝙊𝙆 𝙃𝘼𝘾𝙆 𝙊𝙒𝙉 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙈𝘼𝙆𝙄𝙉𝙂 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/4o4ulnhxdiumtxe/FACEBOOK_+HACK_OWN_WEBSITE_MAKING_METHOD_2025.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 12 -->
+                    <div class="tool-card" data-tool-id="12">
+                        <div class="tool-icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <h3 class="tool-name">𝙄𝙉𝙎𝙏𝘼𝙂𝙍𝘼𝙈 𝙃𝘼𝘾𝙆 𝙊𝙒𝙉 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙈𝘼𝙆𝙄𝙉𝙂</h3>
+                        <p class="tool-description">𝙄𝙉𝙎𝙏𝘼𝙂𝙍𝘼𝙈 𝙃𝘼𝘾𝙆 𝙊𝙒𝙉 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙈𝘼𝙆𝙄𝙉𝙂 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/c4alrbf986kjatj/INSTAGRAMHACKINGOWNWEBMAKINGBYTEAMWORLDKING.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 13 -->
+                    <div class="tool-card" data-tool-id="13">
+                        <div class="tool-icon">
+                            <i class="fas fa-location"></i>
+                        </div>
+                        <h3 class="tool-name">𝙇𝙊𝘾𝘼𝙏𝙄𝙊𝙉📍 𝙃𝘼𝘾𝙆 𝙊𝙒𝙉 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙈𝘼𝙆𝙄𝙉𝙂</h3>
+                        <p class="tool-description">𝙇𝙊𝘾𝘼𝙏𝙄𝙊𝙉📍 𝙃𝘼𝘾𝙆 𝙊𝙒𝙉 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙈𝘼𝙆𝙄𝙉𝙂 BY YARAM-MODS.</p>
+                        <a href="https://www.mediafire.com/file/vbi5ore3ofywh9w/LOCATION_HACK_WEBSITE_MAKING_BY_TEAMWORLD-KING.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 14 -->
+                    <div class="tool-card" data-tool-id="14">
+                        <div class="tool-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 class="tool-name">𝘾𝘼𝙈𝙀𝙍𝘼 📷 𝙃𝘼𝘾𝙆 𝙊𝙒𝙉 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙈𝘼𝙆𝙄𝙉𝙂</h3>
+                        <p class="tool-description">𝘾𝘼𝙈𝙀𝙍𝘼 📷 𝙃𝘼𝘾𝙆 𝙊𝙒𝙉 𝙒𝙀𝘽𝙎𝙄𝙏𝙀 𝙈𝘼𝙆𝙄𝙉𝙂 BY YARAM-MODS.</p>
+                        <a href="https://www.mediafire.com/file/tnuxxqnysdzcsgp/CAMERA+HACK+WEBSITE+MAKE+BYTEAM+WORLD+KING.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 21 -->
+                    <div class="tool-card" data-tool-id="21">
+                        <div class="tool-icon">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <h3 class="tool-name">WIFI HACK</h3>
+                        <p class="tool-description">Hack WiFi BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/r3e5blem6exnkrz/WiFi_HACKER_2.0.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 22 -->
+                    <div class="tool-card" data-tool-id="22">
+                        <div class="tool-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h3 class="tool-name">H@ck credit card</h3>
+                        <p class="tool-description">H@ck credit card own risk BY YARAM-MODS</p>
+                        <a href="https://drive.google.com/drive/folders/1SQJJvocr6TzZagoPgdyisTtyod2gZ0dF" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 23 -->
+                    <div class="tool-card" data-tool-id="23">
+                        <div class="tool-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3 class="tool-name">Powerful Mobile RAT</h3>
+                        <p class="tool-description">Powerful Mobile RAT BY YARAM-MODS</p>
+                        <a href="https://sub2unlock.me/lORN3WH" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 24 -->
+                    <div class="tool-card" data-tool-id="24">
+                        <div class="tool-icon">
+                            <i class="fab fa-facebook"></i>
+                        </div>
+                        <h3 class="tool-name">FACEBOOK H@CK</h3>
+                        <p class="tool-description">Facebook hack BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/4o4ulnhxdiumtxe/FACEBOOK_+HACK_OWN_WEBSITE_MAKING_METHOD_2025.7z/file?dkey=ntdux7cm7gy&r=470" class="launch-btn">Launch Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Methods Category -->
+            <div class="category-section" id="methods">
+                <h3 class="category-title">Methods</h3>
+                <div class="tools-grid">
+                    <!-- Tool Card 2 -->
+                    <div class="tool-card" data-tool-id="2">
+                        <div class="tool-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="tool-name">OWNER</h3>
+                        <p class="tool-description">CONTACT ME  YARAM-MODS.</p>
+                        <a href="https://wa.me/923168598809" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 4 -->
+                    <div class="tool-card" data-tool-id="4">
+                        <div class="tool-icon">
+                            <i class="fas fa-signal"></i>
+                        </div>
+                        <h3 class="tool-name">AVIATOR SIGNAL</h3>
+                        <p class="tool-description">AVIATOR SIGNAL🔥 BY YARAM-MODS.</p>
+                        <a href="https://www.mediafire.com/file/rt1r34fmbaw7yns/HGZY+AVIATOR+SIGNAL_1.0.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 5 -->
+                    <div class="tool-card" data-tool-id="5">
+                        <div class="tool-icon">
+                            <i class="fab fa-facebook"></i>
+                        </div>
+                        <h3 class="tool-name">𝙐𝙉𝙇𝙄𝙈𝙄𝙏𝙀𝘿 𝙁𝘼𝘾𝙀𝘽𝙊𝙊𝙆 𝘼𝘾𝘾𝙊𝙐𝙉𝙏 𝘾𝙍𝙀𝘼𝙏ION 𝙈𝙀𝙏𝙃𝙊𝘿</h3>
+                        <p class="tool-description">Unlimited Facebook Creation Method🔥BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/92ccy3iazf2o9ok/UNLIMITED_FACEBOOK_ACCOUNT_CREATE_BY_JADOON.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 6 -->
+                    <div class="tool-card" data-tool-id="6">
+                        <div class="tool-icon">
+                            <i class="fab fa-facebook"></i>
+                        </div>
+                        <h3 class="tool-name">𝙁𝘼𝘾𝙀𝘽𝙊𝙊𝙆 𝘽𝙇𝙐𝙀 𝘽𝙄𝙊 𝙈𝙀𝙏𝙃𝙊𝘿</h3>
+                        <p class="tool-description">Facebook Blue Bio Method BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/6yjl2a6abl5x4bz/BlueTickOnFaceBookBioMethodByJadoon.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 7 -->
+                    <div class="tool-card" data-tool-id="7">
+                        <div class="tool-icon">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <h3 class="tool-name">Ban Method Tool v1</h3>
+                        <p class="tool-description">Ban tool v1 BY YARAM-MODS.</p>
+                        <a href="https://www.mediafire.com/file/n3yag39vypuq53k/WHATSAPP-BAN-METHOD2025-BYTEA
+        M-WORLD-KING.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 9 -->
+                    <div class="tool-card" data-tool-id="9">
+                        <div class="tool-icon">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <h3 class="tool-name">🥱𝙂𝙀𝙈𝙄𝙉𝙄 𝘼𝙄➕𝙂𝙊𝙊𝙂𝙇𝙀2⃣𝙏𝘽 1⃣𝙔𝙀𝘼𝙍🤌🫦</h3>
+                        <p class="tool-description">🥱𝙂𝙀𝙈𝙄𝙉𝙄 𝘼𝙄➕𝙂𝙊𝙊𝙂𝙇𝙀2⃣𝙏𝘽 1⃣𝙔𝙀𝘼𝙍🤌🫦. BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/li60058sxie3bxq/GeminiAI+Google2TB12MonthMethod2025.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 15 -->
+                    <div class="tool-card" data-tool-id="15">
+                        <div class="tool-icon">
+                            <i class="fa-solid fa-1"></i>
+                        </div>
+                        <h3 class="tool-name">𝙁𝘼𝙆𝙀 𝙉𝙐𝙈𝘽𝙀𝙍 𝙈𝙀𝙏𝙃𝙊𝘿 1</h3>
+                        <p class="tool-description">𝙁𝘼𝙆𝙀 𝙉𝙐𝙈𝘽𝙀𝙍 𝙈𝙀𝙏𝙃𝙊𝘿 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/biqxfavqp8rqpln/FAKENUMBERTRICKJADOON.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 16 -->
+                    <div class="tool-card" data-tool-id="16">
+                        <div class="tool-icon">
+                            <i class="fa-solid fa-2"></i>
+                        </div>
+                        <h3 class="tool-name">𝙁𝘼𝙆𝙀 𝙉𝙐𝙈𝘽𝙀𝙍 𝙈𝙀𝙏𝙃𝙊𝘿 2</h3>
+                        <p class="tool-description">𝙁𝘼𝙆𝙀 𝙉𝙐𝙈𝘽𝙀𝙍 𝙈𝙀𝙏𝙃𝙊𝘿 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/18iqjd04ohndmz4/FAKENUMBERTRICK2JADOON.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 17 -->
+                    <div class="tool-card" data-tool-id="17">
+                        <div class="tool-icon">
+                            <i class="fa-solid fa-3"></i>
+                        </div>
+                        <h3 class="tool-name">𝙁𝘼𝙆𝙀 𝙉𝙐𝙈𝘽𝙀𝙍 𝙈𝙀𝙏𝙃𝙊𝘿 3</h3>
+                        <p class="tool-description">𝙁𝘼𝙆𝙀 𝙉𝙐𝙈𝘽𝙀𝙍 𝙈𝙀𝙏𝙃𝙊𝘿 BY YARAM-MODS.</p>
+                        <a href="https://www.mediafire.com/file/8rtmjfsfyindcjl/FAKENUMBER3TRICKBYJADOON.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 18 -->
+                    <div class="tool-card" data-tool-id="18">
+                        <div class="tool-icon">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <h3 class="tool-name">𝙒𝙄𝙏𝙃𝙊𝙐𝙏 𝙎𝙄𝙈 𝘾𝘼𝙇𝙇𝙄𝙉𝙂 𝙈𝙀𝙏𝙃𝙊𝘿 1</h3>
+                        <p class="tool-description">𝙒𝙄𝙏𝙃𝙊𝙐𝙏 𝙎𝙄𝙈 𝘾𝘼𝙇𝙇𝙄𝙉𝙂 𝙈𝙀𝙏𝙃𝙊𝘿 BY YARAM-MODS.</p>
+                        <a href="https://www.mediafire.com/file/x871rqnd1uo9elb/UNKOWNSACALLKROUNLIMITEDMETHODBYJADOON.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 19 -->
+                    <div class="tool-card" data-tool-id="19">
+                        <div class="tool-icon">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <h3 class="tool-name">𝙒𝙄𝙏𝙃𝙊𝙐𝙏 𝙎𝙄𝙈 𝘾𝘼𝙇𝙇𝙄𝙉𝙂 𝙈𝙀𝙏𝙃𝙊𝘿 2</h3>
+                        <p class="tool-description">𝙒𝙄𝙏𝙃𝙊𝙐𝙏 𝙎𝙄𝙈 𝘾𝘼𝙇𝙇𝙄𝙉𝙂 𝙈𝙀𝙏𝙃𝙊𝘿 BY YARAM-MODS.</p>
+                        <a href="https://www.mediafire.com/file/wp38tvufsj3988j/UNLIMITED+CALL+2+METHOD+BY+JADOON.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 20 -->
+                    <div class="tool-card" data-tool-id="20">
+                        <div class="tool-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <h3 class="tool-name">𝙐𝙉𝙇𝙄𝙈𝙄𝙏𝙀𝘿 𝙂𝙈𝘼𝙄𝙇 𝙈𝘼𝙆𝙄𝙉𝙂</h3>
+                        <p class="tool-description">𝙐𝙉𝙇𝙄𝙈𝙄𝙏𝙀𝘿 𝙂𝙈𝘼𝙄𝙇 𝙈𝘼𝙆𝙄𝙉𝙂 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/7o170c2ekmfdh2v/UNLIMITED+GMAIL+METHOD+1+BY+JADOON.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 25 -->
+                    <div class="tool-card" data-tool-id="25">
+                        <div class="tool-icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <h3 class="tool-name">Instagram B@n Method</h3>
+                        <p class="tool-description">Instagram B@n Method BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/o83fu9y9q3056e5/HOW_TO_BAN_INSTAGRAM_ID_PERMANENT_BAN_BY_MRISBRAND_.7z.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 26 -->
+                    <div class="tool-card" data-tool-id="26">
+                        <div class="tool-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3 class="tool-name">WHATSAPP H@CK METHOD</h3>
+                        <p class="tool-description">WhatsApp H@ck Method BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/71b02kn9j3xbrss/WATHSAP_HACK_BY_MRISBRAND.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 27 -->
+                    <div class="tool-card" data-tool-id="27">
+                        <div class="tool-icon">
+                            <i class="fab fa-tiktok"></i>
+                        </div>
+                        <h3 class="tool-name">TikTok Views Booster Pro</h3>
+                        <p class="tool-description">TikTok Views Booster BY YARAM-MODS</p>
+                        <a href="https://zefoy.com/" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 28 -->
+                    <div class="tool-card" data-tool-id="28">
+                        <div class="tool-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <h3 class="tool-name">YouTube Unlimited Views</h3>
+                        <p class="tool-description">YouTube Unlimited Views BY YARAM-MODS</p>
+                        <a href="https://yaram-yt.vercel.app/" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 31 -->
+                    <div class="tool-card" data-tool-id="31">
+                        <div class="tool-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="tool-name">How to mod any APK</h3>
+                        <p class="tool-description">Mod any APK BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/b736y30nsfv7ajh/MODE+ANY+APPS+GAMES+METHOD.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 32 -->
+                    <div class="tool-card" data-tool-id="32">
+                        <div class="tool-icon">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h3 class="tool-name">Gallery H@ck Method</h3>
+                        <p class="tool-description">Gallery H@ck Method BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/lp2rmu4l1cpwglv/Gallery_Hack.7z/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 33 -->
+                    <div class="tool-card" data-tool-id="33">
+                        <div class="tool-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="tool-name">Lost Gmail Recovery</h3>
+                        <p class="tool-description">Recover Lost Gmail BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/n1wf7cqfqynlbum/How_to_Recover_Gmail_Account_without_Verification_Code_Password_Phone_Number_2025%2528360P%2529.mp4/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 34 -->
+                    <div class="tool-card" data-tool-id="34">
+                        <div class="tool-icon">
+                            <i class="fas fa-cat"></i>
+                        </div>
+                        <h3 class="tool-name">Cat Video Generator</h3>
+                        <p class="tool-description">AI-powered cat video creation suite with unlimited export options BY YARAM-MODS</p>
+                        <a href="https://play.google.com/store/apps/details?id=text.to.video.aivideo.generator" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 35 -->
+                    <div class="tool-card" data-tool-id="35">
+                        <div class="tool-icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <h3 class="tool-name">Unlimited Gmail Account Creator</h3>
+                        <p class="tool-description">Bulk Gmail account creation tool BY YARAM-MODS</p>
+                        <a href="https://drive.google.com/file/d/1-zmzsUujbzGtO8lSSCAUImlF5PbKAleh/view?usp=drivesdk" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 36 -->
+                    <div class="tool-card" data-tool-id="36">
+                        <div class="tool-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="tool-name">Professional Image Enhancer</h3>
+                        <p class="tool-description">AI-powered image editing and enhancement BY YARAM-MODS</p>
+                        <a href="https://drive.google.com/file/d/1qIQ9Ao-O4JCs20Tdg3YPUnAH2V7ASjLp/view?usp=drivesdk" class="launch-btn">Launch Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Apps Category -->
+            <div class="category-section" id="premium-apps">
+                <h3 class="category-title">Premium Apps</h3>
+                <div class="tools-grid">
+                    <!-- Tool Card 37 -->
+                    <div class="tool-card" data-tool-id="37">
+                        <div class="tool-icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                        <h3 class="tool-name">Canva Unlocked</h3>
+                        <p class="tool-description">Canva Unlocked BY YARAM-MODS</p>
+                        <a href="https://modder.me/canva-mod.html" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 38 -->
+                    <div class="tool-card" data-tool-id="38">
+                        <div class="tool-icon">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3 class="tool-name">𝗥𝗘𝗠𝗜𝗡𝗜 𝗠𝗢𝗗 𝗔𝗣𝗞</h3>
+                        <p class="tool-description">𝗥𝗘𝗠𝗜𝗡𝗜 𝗠𝗢𝗗 𝗔𝗣𝗞 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/1nhthm5kt7wg0es/Remini_3.7.1020.202514479.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 39 -->
+                    <div class="tool-card" data-tool-id="39">
+                        <div class="tool-icon">
+                            <i class="fas fa-scissors"></i>
+                        </div>
+                        <h3 class="tool-name">𝗖𝗔𝗣𝗖𝗨𝗧 𝗣𝗥𝗢 𝗔𝗣𝗞</h3>
+                        <p class="tool-description">𝗖𝗔𝗣𝗖𝗨𝗧 𝗣𝗥𝗢 𝗔𝗣𝗞 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/w025suoqdmcjlzt/CAPCUT+PRO+BY+MRISBRAND+.zip/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 40 -->
+                    <div class="tool-card" data-tool-id="40">
+                        <div class="tool-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <h3 class="tool-name">𝗣𝗜𝗖𝗦𝗔𝗥𝗧 𝗣𝗥𝗢</h3>
+                        <p class="tool-description">𝗣𝗜𝗖𝗦𝗔𝗥𝗧 𝗣𝗥𝗢 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/bjgg3kx4s06y3m5/PICSART_PRO_BY_DARK_LEGEND.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 41 -->
+                    <div class="tool-card" data-tool-id="41">
+                        <div class="tool-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="tool-name">𝗖𝗛𝗔𝗧 𝗚𝗣𝗧 𝗣𝗥𝗘𝗠𝗜𝗨𝗠</h3>
+                        <p class="tool-description">𝗖𝗛𝗔𝗧 𝗚𝗣𝗧 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/9bdrtv6g6mtmjoz/ChatGPT+Premium_1.0.11.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 42 -->
+                    <div class="tool-card" data-tool-id="42">
+                        <div class="tool-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3 class="tool-name">𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣 𝗣𝗥𝗘𝗠𝗜𝗨𝗠</h3>
+                        <p class="tool-description">Use a NEW number to register or link device BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/7yl30aq4hs6imve/𝙈𝙍𝙄𝙎𝘽𝙍𝘼𝙉𝘿𝙒𝙃𝘼𝙏𝙎𝘼𝙋𝙋_2.25.15.80.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 43 -->
+                    <div class="tool-card" data-tool-id="43">
+                        <div class="tool-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <h3 class="tool-name">𝗬𝗢𝗨𝗧𝗨𝗕𝗘 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗔𝗣𝗞</h3>
+                        <p class="tool-description">𝗬𝗢𝗨𝗧𝗨𝗕𝗘 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗔𝗣𝗞 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/ep8skhavdtp9c7m/Youtube_5.3.80.132.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 44 -->
+                    <div class="tool-card" data-tool-id="44">
+                        <div class="tool-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <h3 class="tool-name">𝗡𝗘𝗧𝗙𝗟𝗜𝗫 𝗣𝗥𝗘𝗠𝗜𝗨𝗠</h3>
+                        <p class="tool-description">𝗡𝗘𝗧𝗙𝗟𝗜𝗫 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/zt6abyx9g9n1n0x/Netflix_v9.10.1_%2528Premium%2529_by_Abuzar.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 45 -->
+                    <div class="tool-card" data-tool-id="45">
+                        <div class="tool-icon">
+                            <i class="far fa-eye"></i>
+                        </div>
+                        <h3 class="tool-name">𝗪𝗜𝗡𝗞 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗨𝗡𝗟𝗢𝗖𝗞</h3>
+                        <p class="tool-description">𝗪𝗜𝗡𝗞 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗨𝗡𝗟𝗢𝗖𝗞 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/m4jyh9lk4fbgndu/Wink_2.13.0.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 46 -->
+                    <div class="tool-card" data-tool-id="46">
+                        <div class="tool-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3 class="tool-name">𝗜𝗡𝗦𝗛𝗢𝗧 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗨𝗡𝗟𝗢𝗖𝗞</h3>
+                        <p class="tool-description">𝗜𝗡𝗦𝗛𝗢𝗧 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗨𝗡𝗟𝗢𝗖𝗞 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/jiyv52a343qmbtj/InShot_2.152.1504.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 47 -->
+                    <div class="tool-card" data-tool-id="47">
+                        <div class="tool-icon">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <h3 class="tool-name">𝗖𝗥𝗜𝗖𝗙𝗬 𝗧𝗩 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗨𝗡𝗟𝗢𝗖𝗞</h3>
+                        <p class="tool-description">𝗖𝗥𝗜𝗖𝗙𝗬 𝗧𝗩 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗨𝗡𝗟𝗢𝗖𝗞 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/7v8ayo7qcito16u/CRICFy+TV_5.0.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 48 -->
+                    <div class="tool-card" data-tool-id="48">
+                        <div class="tool-icon">
+                            <i class="fab fa-tiktok"></i>
+                        </div>
+                        <h3 class="tool-name">𝗧𝗜𝗞𝗧𝗢𝗞 𝗟𝗜𝗩𝗘 𝗔𝗣𝗞</h3>
+                        <p class="tool-description">𝗧𝗜𝗞𝗧𝗢𝗞 𝗟𝗜𝗩𝗘 𝗔𝗣𝗞 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/4x3h0l3zsm4zfwf/TIKTOK_LIVE_APK_BY_DARK_LEGEND_333.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                    
+                    <!-- Tool Card 49 -->
+                    <div class="tool-card" data-tool-id="49">
+                        <div class="tool-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <h3 class="tool-name"> 𝗧𝗘𝗟𝗘𝗚𝗥𝗔𝗠 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗖𝗟𝗢𝗡𝗘 𝗔𝗣𝗞</h3>
+                        <p class="tool-description"> 𝗧𝗘𝗟𝗘𝗚𝗥𝗔𝗠 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗖𝗟𝗢𝗡𝗘 𝗔𝗣𝗞 BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/aigmux8s9bepzxf/TELEGRAM_MODDED.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 50 -->
+                    <div class="tool-card" data-tool-id="50">
+                        <div class="tool-icon">
+                            <i class="fab fa-spotify"></i>
+                        </div>
+                        <h3 class="tool-name">Spotify Unlocked</h3>
+                        <p class="tool-description">Spotify Unlocked BY YARAM-MODS</p>
+                        <a href="https://www.mediafire.com/file/bjgg3kx4s06y3m5/PICSART_PRO_BY_DARK_LEGEND.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Utilities Category -->
+            <div class="category-section" id="utilities">
+                <h3 class="category-title">Utilities</h3>
+                <div class="tools-grid">
+                    <!-- Tool Card 29 -->
+                    <div class="tool-card" data-tool-id="29">
+                        <div class="tool-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="tool-name">Mobile Lock Virus</h3>
+                        <p class="tool-description">Download Don't install send to victims to install or just send them the link BY YARAM-MODS Iska password 123456 ha</p>
+                        <a href="https://www.mediafire.com/file/lfh03ky59m2nr7e/OlivR+Wa_Don't_install_ftgm.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+
+                    <!-- Tool Card 30 -->
+                    <div class="tool-card" data-tool-id="30">
+                        <div class="tool-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="tool-name">GTA Vice City Mobile Installer</h3>
+                        <p class="tool-description">How to install GTA Vice City on Mobile</p>
+                        <a href="https://www.mediafire.com/file_premium/y8zw457s99r7hj5/GTA_VC_v1.72.42919648_-_espacioapk.com.apk/file" class="launch-btn">Launch Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WhatsApp Request Section -->
+            <div class="whatsapp-request">
+                <h3>📱 Request a Tool via WhatsApp</h3>
+                <p>Type the tool you need and we'll get back to you</p>
+                <div class="request-input-group">
+                    <input type="text" id="toolRequest" placeholder="Type the tool you need…">
+                    <button id="sendRequestBtn">Send</button>
+                </div>
+                <p class="join-prompt">We'll respond as soon as possible</p>
+            </div>
+
+            <!-- Community Links Section -->
+            <h2 class="section-title">Join Our Community</h2>
+            <div class="community-links">
+                <a href="https://whatsapp.com/channel/0029VaffEJH2f3EFCwrsKq3j" class="community-btn whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp Channel</span>
+                </a>
+                
+                <a href="https://t.me/yaramxkazmi" class="community-btn telegram" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    <span>Telegram Channel</span>
+                </a>
+                
+                <a href="https://chat.whatsapp.com/DU8ahKUmJUF6kgV6XuGLxX?mode=ems_copy_t" class="community-btn whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp Group</span>
+                </a>
+            </div>
+            
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h3 class="faq-title">Frequently Asked Questions</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Who made YARAM-KAZMI ? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        YARAM-MODS was created by me — driven by passion for tech, tools, and community growth. But it wouldn't be where it is without the support of a few close people who believed in the vision early on.
+
+This platform wasn't built just for me — it was built *for you*. For creators, learners, hackers, hustlers, and anyone trying to level up with the right tools and knowledge.
+
+Since launch, YARAM-MODS has grown faster than expected — with hundreds of users, daily drops, and even more coming. And this is still just the beginning...
+
+*Keep supporting. Keep sharing. It's yours now too.* 🔥  
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Why  YARAM-KAZMI? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Unlock tools. Learn skills. Grow faster.  
+From design & ethical hacking to marketing & automation — everything you need in one powerful hub.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Are these tools free to use? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, all tools are completely free for our community members. We may offer premium tools in the future.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-logo">YARAM-MODS</div>
+                <p class="footer-description">
+                    Providing cutting-edge web tools and resources for developers and tech enthusiasts. 
+                    Join our community to stay updated with the latest releases and exclusive content.
+                </p>
+                <a href="https://yaram-tool.netlify.app/" class="home-link">Visit Our Homepage</a>
+            </div>
+        </footer>
+
+        <!-- Floating Join Community Button -->
+        <a href="#" class="join-community">Join Community</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordGate = document.getElementById('password-gate');
+            const mainContent = document.getElementById('main-content');
+            const passwordModal = document.getElementById('password-modal');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const modalClose = document.getElementById('modal-close');
+            const page404 = document.getElementById('page-404');
+            const homeBtn = document.getElementById('home-btn');
+            const announcementPopup = document.getElementById('announcement-popup');
+            const overlay = document.getElementById('overlay');
+            const popupClose = document.getElementById('popup-close');
+            const popupBtn = document.getElementById('popup-btn');
+            const toolRequestForm = document.getElementById('tool-request-form');
+            const sendRequestBtn = document.getElementById('sendRequestBtn');
+            const toolRequestInput = document.getElementById('toolRequest');
+            const newToolBtn = document.getElementById('new-tool-btn');
+            
+            // New requirement elements
+            const joinGroupBtn = document.getElementById('join-group-btn');
+            const joinChannelBtn = document.getElementById('join-channel-btn');
+            const requirementGroup = document.getElementById('requirement-group');
+            const requirementChannel = document.getElementById('requirement-channel');
+            const requirementsComplete = document.getElementById('requirements-complete');
+            const progressBar = document.getElementById('progress-bar');
+            
+            // Track completion status
+            let groupCompleted = false;
+            let channelCompleted = false;
+            let modalShown = false;
+            
+            // Check if URL has 404 parameter (for demonstration)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('404')) {
+                show404();
+            }
+            
+            // Handle password form submission
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (passwordInput.value === 'YARAM-KAZMI) {
+                    // Correct password
+                    unlockPage();
+                    hidePasswordModal();
+                    showAnnouncement();
+                } else {
+                    // Incorrect password
+                    errorMessage.classList.add('show');
+                    passwordForm.classList.add('shake');
+                    
+                    // Remove shake animation after it completes
+                    setTimeout(() => {
+                        passwordForm.classList.remove('shake');
+                    }, 500);
+                    
+                    // Clear input
+                    passwordInput.value = '';
+                }
+            });
+            
+            // Close modal when close button is clicked
+            modalClose.addEventListener('click', hidePasswordModal);
+            
+            // Close modal when clicking outside the content
+            passwordModal.addEventListener('click', function(e) {
+                if (e.target === passwordModal) {
+                    hidePasswordModal();
+                }
+            });
+            
+            // Show password modal
+            function showPasswordModal() {
+                if (!modalShown) {
+                    passwordModal.classList.add('show');
+                    modalShown = true;
+                }
+            }
+            
+            // Hide password modal
+            function hidePasswordModal() {
+                passwordModal.classList.remove('show');
+            }
+            
+            // WhatsApp request functionality
+            sendRequestBtn.addEventListener('click', function() {
+                const toolName = toolRequestInput.value.trim();
+                
+                if (toolName) {
+                    // Format the message for WhatsApp
+                    const encodedMessage = encodeURIComponent(`Tool Request: ${toolName}`);
+                    const whatsappURL = `https://wa.me/923168598809?text=${encodedMessage}`;
+                    
+                    // Open WhatsApp
+                    window.open(whatsappURL, '_blank');
+                    
+                    // Clear the input
+                    toolRequestInput.value = '';
+                    
+                    // Show confirmation
+                    alert('Your request has been sent via WhatsApp! We\'ll get back to you soon.');
+                } else {
+                    alert('Please enter a tool name before sending.');
+                }
+            });
+            
+            // Allow sending with Enter key
+            toolRequestInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendRequestBtn.click();
+                }
+            });
+            
+            // New tool button functionality
+            newToolBtn.addEventListener('click', function() {
+                // Scroll to the Camera Hack Bot (Tool 1)
+                const toolCard = document.querySelector('[data-tool-id="1"]');
+                if (toolCard) {
+                    toolCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Add highlight effect
+                    toolCard.style.boxShadow = '0 0 20px var(--neon-green)';
+                    setTimeout(() => {
+                        toolCard.style.boxShadow = '';
+                    }, 2000);
+                }
+            });
+            
+            // Join Group Button
+            joinGroupBtn.addEventListener('click', function() {
+                // Open WhatsApp group
+                window.open('https://chat.whatsapp.com/DU8ahKUmJUF6kgV6XuGLxX?mode=ems_copy_t', '_blank');
+                
+                // Mark as completed
+                groupCompleted = true;
+                requirementGroup.classList.add('completed');
+                joinGroupBtn.textContent = 'Joined ✓';
+                joinGroupBtn.classList.add('completed');
+                joinGroupBtn.disabled = true;
+                
+                // Update progress
+                updateProgress();
+                
+                // Check if both requirements are complete
+                checkRequirementsComplete();
+            });
+            
+            // Join Channel Button
+            joinChannelBtn.addEventListener('click', function() {
+                // Open WhatsApp channel
+                window.open('https://whatsapp.com/channel/0029VaffEJH2f3EFCwrsKq3j', '_blank');
+                
+                // Mark as completed
+                channelCompleted = true;
+                requirementChannel.classList.add('completed');
+                joinChannelBtn.textContent = 'Joined ✓';
+                joinChannelBtn.classList.add('completed');
+                joinChannelBtn.disabled = true;
+                
+                // Update progress
+                updateProgress();
+                
+                // Check if both requirements are complete
+                checkRequirementsComplete();
+            });
+            
+            // Update progress bar
+            function updateProgress() {
+                let progress = 0;
+                if (groupCompleted) progress += 50;
+                if (channelCompleted) progress += 50;
+                
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            // Check if both requirements are complete
+            function checkRequirementsComplete() {
+                if (groupCompleted && channelCompleted) {
+                    requirementsComplete.classList.add('show');
+                    
+                    // Show password modal after a short delay
+                    setTimeout(() => {
+                        showPasswordModal();
+                    }, 1000);
+                }
+            }
+            
+            function unlockPage() {
+                passwordGate.style.opacity = '0';
+                passwordGate.style.visibility = 'hidden';
+                
+                mainContent.style.display = 'block';
+                setTimeout(() => {
+                    mainContent.style.opacity = '1';
+                }, 50);
+            }
+            
+            function show404() {
+                page404.style.display = 'flex';
+            }
+            
+            function hide404() {
+                page404.style.display = 'none';
+            }
+            
+            function showAnnouncement() {
+                // Check if already shown
+                if (!sessionStorage.getItem('announcementShown')) {
+                    setTimeout(() => {
+                        announcementPopup.style.display = 'block';
+                        overlay.style.display = 'block';
+                        sessionStorage.setItem('announcementShown', 'true');
+                    }, 2000);
+                }
+            }
+            
+            function hideAnnouncement() {
+                announcementPopup.style.display = 'none';
+                overlay.style.display = 'none';
+            }
+            
+            // Home button for 404 page
+            homeBtn.addEventListener('click', function() {
+                hide404();
+                // Remove 404 parameter from URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            });
+            
+            // Close announcement popup
+            popupClose.addEventListener('click', hideAnnouncement);
+            overlay.addEventListener('click', hideAnnouncement);
+            
+            // Popup button action
+            popupBtn.addEventListener('click', function() {
+                hideAnnouncement();
+                // Scroll to the Powerful Mobile Rat  (Tool 23)
+                const toolCard = document.querySelector('[data-tool-id="23"]');
+                if (toolCard) {
+                    toolCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Add highlight effect
+                    toolCard.style.boxShadow = '0 0 20px var(--neon-green)';
+                    setTimeout(() => {
+                        toolCard.style.boxShadow = '';
+                    }, 2000);
+                }
+            });
+            
+            // Tool request form
+            if (toolRequestForm) {
+                toolRequestForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for your request! We\'ll consider adding this tool to our collection.');
+                    toolRequestForm.reset();
+                });
+            }
+            
+            // Add glitch effect to logo on hover
+            const logo = document.querySelector('.logo');
+            logo.addEventListener('mouseenter', () => {
+                logo.style.animation = 'glitch 0.3s infinite';
+            });
+            
+            logo.addEventListener('mouseleave', () => {
+                logo.style.animation = 'none';
+            });
+            
+            // FAQ functionality
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    answer.classList.toggle('show');
+                    
+                    const icon = question.querySelector('i');
+                    if (answer.classList.contains('show')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+            
+            // Category filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const categorySections = document.querySelectorAll('.category-section');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    const filter = button.getAttribute('data-filter');
+                    
+                    // Show/hide categories based on filter
+                    categorySections.forEach(section => {
+                        if (filter === 'all' || section.id.includes(filter)) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Join community button functionality
+            const joinButton = document.querySelector('.join-community');
+            joinButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Scroll to community section
+                document.querySelector('.community-links').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+        });
+    </script>
+</body>
+  </html>
